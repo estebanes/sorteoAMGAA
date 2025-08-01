@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteo AMGAA IENF SAN JUAN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-image {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+        }
+
+        .logo-image:hover {
+            /* Sin efectos de hover */
+        }
+
+        .logo-text {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            color: #333;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 30px;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                #ff6b35 0deg, #f7931e 11.25deg,
+                #ff6b35 11.25deg, #f7931e 22.5deg,
+                #ff6b35 22.5deg, #f7931e 33.75deg,
+                #ff6b35 33.75deg, #f7931e 45deg,
+                #ff6b35 45deg, #f7931e 56.25deg,
+                #ff6b35 56.25deg, #f7931e 67.5deg,
+                #ff6b35 67.5deg, #f7931e 78.75deg,
+                #ff6b35 78.75deg, #f7931e 90deg,
+                #ff6b35 90deg, #f7931e 101.25deg,
+                #ff6b35 101.25deg, #f7931e 112.5deg,
+                #ff6b35 112.5deg, #f7931e 123.75deg,
+                #ff6b35 123.75deg, #f7931e 135deg,
+                #ff6b35 135deg, #f7931e 146.25deg,
+                #ff6b35 146.25deg, #f7931e 157.5deg,
+                #ff6b35 157.5deg, #f7931e 168.75deg,
+                #ff6b35 168.75deg, #f7931e 180deg,
+                #ff6b35 180deg, #f7931e 191.25deg,
+                #ff6b35 191.25deg, #f7931e 202.5deg,
+                #ff6b35 202.5deg, #f7931e 213.75deg,
+                #ff6b35 213.75deg, #f7931e 225deg,
+                #ff6b35 225deg, #f7931e 236.25deg,
+                #ff6b35 236.25deg, #f7931e 247.5deg,
+                #ff6b35 247.5deg, #f7931e 258.75deg,
+                #ff6b35 258.75deg, #f7931e 270deg,
+                #ff6b35 270deg, #f7931e 281.25deg,
+                #ff6b35 281.25deg, #f7931e 292.5deg,
+                #ff6b35 292.5deg, #f7931e 303.75deg,
+                #ff6b35 303.75deg, #f7931e 315deg,
+                #ff6b35 315deg, #f7931e 326.25deg,
+                #ff6b35 326.25deg, #f7931e 337.5deg,
+                #ff6b35 337.5deg, #f7931e 348.75deg,
+                #ff6b35 348.75deg, #f7931e 360deg
+            );
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 8px solid #fff;
+        }
+
+        .wheel-number {
+            position: absolute;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            transform-origin: center;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wheel::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #ff6b35;
+            z-index: 10;
+        }
+
+        .spinning {
+            animation: spin 0.1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .result-display {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .result-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .result-prize {
+            font-size: 1.2em;
+            line-height: 1.4;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn:hover:not(:disabled) {
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .history-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        .history-btn:hover:not(:disabled) {
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .reset-btn {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+        }
+
+        .reset-btn:hover:not(:disabled) {
+            box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+        }
+
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: -10px;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .history-item {
+            background: #f8f9fa;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 5px solid #ff6b35;
+        }
+
+        .history-number {
+            font-weight: bold;
+            color: #ff6b35;
+            font-size: 1.1em;
+        }
+
+        .history-prize {
+            color: #333;
+            margin-top: 5px;
+        }
+
+
+
+        .stats {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .stats h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+        }
+
+        .finished-message {
+            background: #28a745;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .wheel-container {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .logo-image {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .logo-text {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="Logo.jpg" alt="AMGAA IENF SAN JUAN" class="logo-image">
+            <div class="logo-text">AMGAA IENF SAN JUAN</div>
+            <div class="subtitle">Sorteo con Ruleta</div>
+        </div>
+
+        <div class="wheel-container">
+            <div class="wheel-pointer"></div>
+            <div class="wheel" id="wheel">
+                <div class="wheel-number" style="top: 10px; left: 50%; transform: translateX(-50%);">1</div>
+                <div class="wheel-number" style="top: 25px; left: 75%; transform: translateX(-50%);">2</div>
+                <div class="wheel-number" style="top: 50px; left: 85%; transform: translateX(-50%);">3</div>
+                <div class="wheel-number" style="top: 75px; left: 75%; transform: translateX(-50%);">4</div>
+                <div class="wheel-number" style="top: 100px; left: 50%; transform: translateX(-50%);">5</div>
+                <div class="wheel-number" style="top: 75px; left: 25%; transform: translateX(-50%);">6</div>
+                <div class="wheel-number" style="top: 50px; left: 15%; transform: translateX(-50%);">7</div>
+                <div class="wheel-number" style="top: 25px; left: 25%; transform: translateX(-50%);">8</div>
+                <div class="wheel-number" style="bottom: 10px; left: 50%; transform: translateX(-50%);">9</div>
+                <div class="wheel-number" style="bottom: 25px; left: 25%; transform: translateX(-50%);">10</div>
+                <div class="wheel-number" style="bottom: 50px; left: 15%; transform: translateX(-50%);">11</div>
+                <div class="wheel-number" style="bottom: 75px; left: 25%; transform: translateX(-50%);">12</div>
+                <div class="wheel-number" style="bottom: 100px; left: 50%; transform: translateX(-50%);">13</div>
+                <div class="wheel-number" style="bottom: 75px; left: 75%; transform: translateX(-50%);">14</div>
+                <div class="wheel-number" style="bottom: 50px; left: 85%; transform: translateX(-50%);">15</div>
+                <div class="wheel-number" style="bottom: 25px; left: 75%; transform: translateX(-50%);">16</div>
+            </div>
+        </div>
+
+        <div class="result-display" id="resultDisplay">
+            <div class="result-number" id="resultNumber"></div>
+            <div class="result-prize" id="resultPrize"></div>
+        </div>
+
+        <div class="stats">
+            <h3>Progreso del Sorteo</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div id="progressText">0 de 15 premios asignados</div>
+        </div>
+
+        <div class="finished-message" id="finishedMessage" style="display: none;">
+            🎉 ¡Sorteo finalizado! Todos los premios fueron asignados.
+        </div>
+
+        <button class="btn" id="spinButton">🎰 Girar Ruleta</button>
+        <button class="btn history-btn" id="historyButton">📋 Ver Historial</button>
+        <button class="btn reset-btn" id="resetButton">🗑️ Borrar Datos</button>
+    </div>
+
+    <!-- Modal para el historial -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Historial Completo del Sorteo</h2>
+            <div id="historyList"></div>
+        </div>
+    </div>
+
+    <script>
+        // Configuración del sorteo
+        const TOTAL_NUMBERS = 640;
+        const PRIZES = [
+            "Un corte de pelo + una nutrición",
+            "1 docena de pizzetas + 1 budín de 30cm a elección",
+            "Tira de luces led x 5m",
+            "2 docenas de empanadas",
+            "3 botellas de vino",
+            "Semipermanente de uñas con diseño a elección",
+            "Una remera deportiva de mujer",
+            "Un desayuno para dos personas",
+            "5 clases de kayak",
+            "Choripán Pirandello con fritas y un jarro de chopp",
+            "3 packs de bolsas de residuos Polcen 45x60x30u",
+            "3 packs de bolsas de residuos 60x90x30u",
+            "Antiparras Marfed con estuche",
+            "Una promo de fernet + coca",
+            "Escuela de Guardavidas"
+        ];
+
+
+
+        // Estado del sorteo
+        let drawnNumbers = [];
+        let assignedPrizes = [];
+        let isSpinning = false;
+
+        // Elementos del DOM
+        const wheel = document.getElementById('wheel');
+        const spinButton = document.getElementById('spinButton');
+        const resultDisplay = document.getElementById('resultDisplay');
+        const resultNumber = document.getElementById('resultNumber');
+        const resultPrize = document.getElementById('resultPrize');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const finishedMessage = document.getElementById('finishedMessage');
+        const historyButton = document.getElementById('historyButton');
+        const historyModal = document.getElementById('historyModal');
+        const historyList = document.getElementById('historyList');
+        const closeModal = document.getElementById('closeModal');
+        const resetButton = document.getElementById('resetButton');
+
+        // Cargar datos guardados
+        function loadSavedData() {
+            const saved = localStorage.getItem('sorteoData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                drawnNumbers = data.drawnNumbers || [];
+                assignedPrizes = data.assignedPrizes || [];
+                updateProgress();
+                showLastResult();
+            }
+        }
+
+        // Guardar datos
+        function saveData() {
+            const data = {
+                drawnNumbers: drawnNumbers,
+                assignedPrizes: assignedPrizes
+            };
+            localStorage.setItem('sorteoData', JSON.stringify(data));
+        }
+
+        // Actualizar progreso
+        function updateProgress() {
+            const progress = (assignedPrizes.length / PRIZES.length) * 100;
+            progressFill.style.width = progress + '%';
+            progressText.textContent = `${assignedPrizes.length} de ${PRIZES.length} premios asignados`;
+            
+            if (assignedPrizes.length >= PRIZES.length) {
+                spinButton.disabled = true;
+                finishedMessage.style.display = 'block';
+            }
+        }
+
+        // Mostrar último resultado
+        function showLastResult() {
+            if (drawnNumbers.length > 0) {
+                const lastIndex = drawnNumbers.length - 1;
+                const lastNumber = drawnNumbers[lastIndex];
+                
+                resultNumber.textContent = `Número sorteado: ${lastNumber}`;
+                resultPrize.textContent = `Premio: ${assignedPrizes[lastIndex]}`;
+                resultDisplay.style.display = 'block';
+            }
+        }
+
+        // Generar número aleatorio no usado
+        function getRandomUnusedNumber() {
+            const availableNumbers = [];
+            for (let i = 1; i <= TOTAL_NUMBERS; i++) {
+                if (!drawnNumbers.includes(i)) {
+                    availableNumbers.push(i);
+                }
+            }
+            return availableNumbers[Math.floor(Math.random() * availableNumbers.length)];
+        }
+
+
+
+        // Generar premio aleatorio no usado
+        function getRandomUnusedPrize() {
+            const availablePrizes = PRIZES.filter(prize => !assignedPrizes.includes(prize));
+            return availablePrizes[Math.floor(Math.random() * availablePrizes.length)];
+        }
+
+
+
+        // Animación de la ruleta
+        function spinWheel() {
+            isSpinning = true;
+            spinButton.disabled = true;
+            resultDisplay.style.display = 'none';
+            
+            // Efecto de giro
+            wheel.classList.add('spinning');
+            
+            // Simular números aleatorios durante el giro
+            let spinInterval = setInterval(() => {
+                const tempNumber = Math.floor(Math.random() * TOTAL_NUMBERS) + 1;
+                resultNumber.textContent = `Girando... ${tempNumber}`;
+                resultPrize.textContent = 'Seleccionando premio...';
+                resultDisplay.style.display = 'block';
+            }, 100);
+
+            // Detener después de 3 segundos
+            setTimeout(() => {
+                clearInterval(spinInterval);
+                wheel.classList.remove('spinning');
+                
+                // Lógica de selección de número
+                const selectedNumber = getRandomUnusedNumber();
+                const selectedPrize = getRandomUnusedPrize();
+                
+                // Guardar resultados
+                drawnNumbers.push(selectedNumber);
+                assignedPrizes.push(selectedPrize);
+                
+                // Mostrar resultado
+                resultNumber.textContent = `Número sorteado: ${selectedNumber}`;
+                resultPrize.textContent = `Premio: ${selectedPrize}`;
+                resultDisplay.style.display = 'block';
+                
+                // Guardar datos
+                saveData();
+                updateProgress();
+                
+                // Reactivar botón si hay premios disponibles
+                if (assignedPrizes.length < PRIZES.length) {
+                    spinButton.disabled = false;
+                }
+                
+                isSpinning = false;
+            }, 3000);
+        }
+
+        // Mostrar historial
+        function showHistory() {
+            historyList.innerHTML = '';
+            
+            if (drawnNumbers.length === 0) {
+                historyList.innerHTML = '<p>No hay sorteos realizados aún.</p>';
+            } else {
+                for (let i = 0; i < drawnNumbers.length; i++) {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    
+                    historyItem.innerHTML = `
+                        <div class="history-number">Sorteo #${i + 1}: Número ${drawnNumbers[i]}</div>
+                        <div class="history-prize">${assignedPrizes[i]}</div>
+                    `;
+                    historyList.appendChild(historyItem);
+                }
+            }
+            
+            historyModal.style.display = 'block';
+        }
+
+        // Borrar todos los datos
+        function resetData() {
+            if (confirm('¿Estás seguro de que quieres borrar todos los datos del sorteo?\n\nEsta acción no se puede deshacer.')) {
+                // Limpiar arrays
+                drawnNumbers = [];
+                assignedPrizes = [];
+                
+                // Limpiar localStorage
+                localStorage.removeItem('sorteoData');
+                
+                // Actualizar interfaz
+                resultDisplay.style.display = 'none';
+                updateProgress();
+                finishedMessage.style.display = 'none';
+                spinButton.disabled = false;
+                
+                // Mostrar mensaje de confirmación
+                alert('✅ Todos los datos han sido borrados exitosamente.\n\nEl sorteo ha sido reiniciado.');
+            }
+        }
+
+        // Event listeners
+        spinButton.addEventListener('click', spinWheel);
+        historyButton.addEventListener('click', showHistory);
+        resetButton.addEventListener('click', resetData);
+        closeModal.addEventListener('click', () => {
+            historyModal.style.display = 'none';
+        });
+
+        // Cerrar modal al hacer clic fuera
+        window.addEventListener('click', (event) => {
+            if (event.target === historyModal) {
+                historyModal.style.display = 'none';
+            }
+        });
+
+
+
+        // Inicializar
+        loadSavedData();
+        updateProgress();
+    </script>
+</body>
+</html> 
