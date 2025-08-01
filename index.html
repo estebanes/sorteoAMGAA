@@ -427,19 +427,19 @@
         <div class="left-panel">
             <div class="header">
                 <div class="logo-container">
-                    <img src="Logo.jpg" alt="AMGAA IENF SAN JUAN" class="logo-image">
+            <img src="Logo.jpg" alt="AMGAA IENF SAN JUAN" class="logo-image">
                     <div>
                         <div class="title">AMGAA IENF SAN JUAN</div>
                         <div class="subtitle">Escuela de Guardavidas 2025</div>
                     </div>
-                </div>
+        </div>
             </div>
 
             <div class="sorteo-section">
                 <div class="numero-display" id="numeroDisplay">
                     <div class="numero-actual" id="numeroActual">?</div>
                     <div class="numero-texto" id="numeroTexto">Presiona "Sortear" para comenzar</div>
-                </div>
+        </div>
 
                 <div class="action-buttons">
                     <button class="btn btn-primary" id="sortearButton">
@@ -455,9 +455,9 @@
             </div>
 
             <div class="result-section" id="resultDisplay">
-                <div class="result-number" id="resultNumber"></div>
-                <div class="result-prize" id="resultPrize"></div>
-            </div>
+            <div class="result-number" id="resultNumber"></div>
+            <div class="result-prize" id="resultPrize"></div>
+        </div>
 
             <div class="finished-message" id="finishedMessage">
                 🎉 ¡Sorteo finalizado! Todos los premios fueron asignados.
@@ -493,7 +493,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title">Historial Completo del Sorteo</div>
-                <span class="close" id="closeModal">&times;</span>
+            <span class="close" id="closeModal">&times;</span>
             </div>
             <div id="historyList"></div>
         </div>
@@ -657,18 +657,18 @@
             }, 25);
 
                          // Detener después de 1.5 segundos
-             setTimeout(() => {
+            setTimeout(() => {
                  clearInterval(sortInterval);
                  numeroDisplay.classList.remove('sorteando');
-                 
-                 // Lógica de selección de número
-                 const selectedNumber = getRandomUnusedNumber();
-                 const selectedPrize = getRandomUnusedPrize();
-                 
-                 // Guardar resultados
-                 drawnNumbers.push(selectedNumber);
-                 assignedPrizes.push(selectedPrize);
-                 
+                
+                // Lógica de selección de número
+                const selectedNumber = getRandomUnusedNumber();
+                const selectedPrize = getRandomUnusedPrize();
+                
+                // Guardar resultados
+                drawnNumbers.push(selectedNumber);
+                assignedPrizes.push(selectedPrize);
+                
                  // Pausa dramática antes de mostrar el resultado
                  numeroDisplay.classList.add('revelando');
                  numeroTexto.textContent = '¡Revelando ganador...!';
@@ -681,15 +681,15 @@
                      
                      resultNumber.textContent = `Número ${selectedNumber}`;
                      resultPrize.textContent = selectedPrize;
-                     resultDisplay.style.display = 'block';
-                     
+                resultDisplay.style.display = 'block';
+                
                      // Guardar datos y actualizar interfaz
-                     saveData();
-                     updateProgress();
+                saveData();
+                updateProgress();
                      updatePrizesList();
-                     
-                     // Reactivar botón si hay premios disponibles
-                     if (assignedPrizes.length < PRIZES.length) {
+                
+                // Reactivar botón si hay premios disponibles
+                if (assignedPrizes.length < PRIZES.length) {
                          sortearButton.disabled = false;
                      }
                      
