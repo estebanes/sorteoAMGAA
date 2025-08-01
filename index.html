@@ -621,6 +621,13 @@
                     availableNumbers.push(i);
                 }
             }
+            
+            // Verificar si hay números disponibles
+            if (availableNumbers.length === 0) {
+                alert('¡Todos los números han sido sorteados! No hay más números disponibles.');
+                return null;
+            }
+            
             return availableNumbers[Math.floor(Math.random() * availableNumbers.length)];
         }
 
@@ -641,6 +648,13 @@
             // Lógica de selección de número (seleccionar primero)
             const selectedNumber = getRandomUnusedNumber();
             const selectedPrize = getRandomUnusedPrize();
+            
+            // Verificar si se pudo seleccionar un número
+            if (selectedNumber === null) {
+                isSorting = false;
+                sortearButton.disabled = false;
+                return;
+            }
             
             // Efecto de sorteo
             numeroDisplay.classList.add('sorteando');
@@ -693,7 +707,7 @@
                         numeroDisplay.classList.remove('revelando');
                     }, 1000);
                 }
-            }, 30);
+            }, 15);
         }
 
         // Mostrar historial
