@@ -638,65 +638,62 @@
             sortearButton.disabled = true;
             resultDisplay.style.display = 'none';
             
+            // Lógica de selección de número (seleccionar primero)
+            const selectedNumber = getRandomUnusedNumber();
+            const selectedPrize = getRandomUnusedPrize();
+            
             // Efecto de sorteo
             numeroDisplay.classList.add('sorteando');
             numeroTexto.textContent = 'Sorteando...';
             
             // Pre-calcular números aleatorios para mejor rendimiento
             const randomNumbers = [];
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 150; i++) {
                 randomNumbers.push(Math.floor(Math.random() * TOTAL_NUMBERS) + 1);
             }
+            // Agregar el número ganador al final
+            randomNumbers.push(selectedNumber);
             
             let currentIndex = 0;
             
             // Simular números aleatorios durante el sorteo
             let sortInterval = setInterval(() => {
                 numeroActual.textContent = randomNumbers[currentIndex];
-                currentIndex = (currentIndex + 1) % randomNumbers.length;
-            }, 25);
-
-                         // Detener después de 1.5 segundos
-            setTimeout(() => {
-                 clearInterval(sortInterval);
-                 numeroDisplay.classList.remove('sorteando');
+                currentIndex++;
                 
-                // Lógica de selección de número
-                const selectedNumber = getRandomUnusedNumber();
-                const selectedPrize = getRandomUnusedPrize();
-                
-                // Guardar resultados
-                drawnNumbers.push(selectedNumber);
-                assignedPrizes.push(selectedPrize);
-                
-                 // Pausa dramática antes de mostrar el resultado
-                 numeroDisplay.classList.add('revelando');
-                 numeroTexto.textContent = '¡Revelando ganador...!';
-                 
-                 // Delay dramático de 2 segundos antes de mostrar el resultado
-                 setTimeout(() => {
-                     numeroDisplay.classList.remove('revelando');
-                     numeroActual.textContent = selectedNumber;
-                     numeroTexto.textContent = '¡Número sorteado!';
-                     
-                     resultNumber.textContent = `Número ${selectedNumber}`;
-                     resultPrize.textContent = selectedPrize;
-                resultDisplay.style.display = 'block';
-                
-                     // Guardar datos y actualizar interfaz
-                saveData();
-                updateProgress();
-                     updatePrizesList();
-                
-                // Reactivar botón si hay premios disponibles
-                if (assignedPrizes.length < PRIZES.length) {
-                         sortearButton.disabled = false;
-                     }
-                     
-                     isSorting = false;
-                 }, 2000);
-                 
-             }, 1500);
+                // Cuando llegamos al último número (el ganador), detener
+                if (currentIndex >= randomNumbers.length) {
+                    clearInterval(sortInterval);
+                    numeroDisplay.classList.remove('sorteando');
+                    numeroDisplay.classList.add('revelando');
+                    numeroTexto.textContent = '¡Número sorteado!';
+                    
+                    // Guardar resultados
+                    drawnNumbers.push(selectedNumber);
+                    assignedPrizes.push(selectedPrize);
+                    
+                    resultNumber.textContent = `Número ${selectedNumber}`;
+                    resultPrize.textContent = selectedPrize;
+                    resultDisplay.style.display = 'block';
+                    
+                    // Guardar datos y actualizar interfaz
+                    saveData();
+                    updateProgress();
+                    updatePrizesList();
+                    
+                    // Reactivar botón si hay premios disponibles
+                    if (assignedPrizes.length < PRIZES.length) {
+                        sortearButton.disabled = false;
+                    }
+                    
+                    isSorting = false;
+                    
+                    // Remover clase de revelación después de un momento
+                    setTimeout(() => {
+                        numeroDisplay.classList.remove('revelando');
+                    }, 1000);
+                }
+            }, 30);
         }
 
         // Mostrar historial
